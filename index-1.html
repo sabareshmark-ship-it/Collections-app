@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a7a68">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Vetri Murugan Finance</title>
+<style>
+:root{--bg:#f3f6f9;--card:#fff;--ink:#14262e;--mute:#5d707a;--line:#e4eaf0;--brand:#0a7a68;--bi:#fff;--gold:#e8a900;--red:#c2352b;--green:#1f8a54;--soft:#e8f4f1;--sh:0 1px 2px rgba(20,38,46,.06),0 6px 18px rgba(20,38,46,.06);color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1a1f;--card:#16262d;--ink:#e8f0f2;--mute:#8fa5ad;--line:#26393f;--brand:#4fb3c3;--bi:#08262c;--gold:#f0b92a;--red:#ef6a5e;--green:#4cc88a;--soft:#1c3640;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:env(safe-area-inset-top,0px) 0 calc(88px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:640px;margin:0 auto;padding:0 14px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0 10px;gap:8px}
+h1{font-size:20px;font-weight:800;margin:0;line-height:1.2}
+h2{font-size:17px;font-weight:700;margin:22px 0 10px}
+.mute{color:var(--mute);font-size:13px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card,.stat,.bar{background:var(--card);box-shadow:var(--sh);border-radius:18px}
+.card{padding:16px;margin:10px 0}
+.bar{padding:10px 14px;font-size:14px;margin:6px 0;border:1px solid var(--gold)}
+.hero{background:var(--brand);color:var(--bi);border-radius:22px;padding:20px;margin:6px 0 12px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--sh)}
+.hero b{font-size:36px;font-weight:800;line-height:1.1}.hero span{opacity:.85;font-size:14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{padding:14px}.stat b{display:block;font-size:24px;font-weight:800}.stat.red b{color:var(--red)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px;background:var(--soft);color:var(--brand)}
+.pill.Overdue{background:var(--red);color:#fff}.pill.Closed{background:var(--line);color:var(--mute)}.pill.Active{background:var(--green);color:#fff}.pill.sync{background:var(--gold);color:#241a00}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px}.prog i{display:block;height:100%;background:var(--brand)}
+label{display:block;font-weight:700;font-size:14px;margin:16px 0 6px;color:var(--mute)}
+select,input{width:100%;height:54px;font:inherit;font-size:16px;padding:0 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+input.big{height:72px;font-size:32px;font-weight:800;text-align:center}
+.btn{width:100%;height:54px;margin-top:20px;border:0;background:var(--brand);color:var(--bi);font:inherit;font-weight:800;font-size:17px;border-radius:16px;cursor:pointer}
+.btn.sm{width:auto;height:auto;margin:0;padding:8px 14px;font-size:14px;border-radius:10px;background:var(--soft);color:var(--brand)}
+.btn.alt{background:var(--soft);color:var(--brand)}
+.chips,.modes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.chips button,.modes button{flex:1;min-width:60px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--soft);color:var(--brand);font:inherit;font-weight:800;cursor:pointer}
+.modes button{background:var(--card);color:var(--ink)}.modes button.on{background:var(--brand);color:var(--bi);border-color:var(--brand)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cal .h{text-align:center;font-size:12px;color:var(--mute)}
+.cal button{aspect-ratio:1;border:0;border-radius:12px;background:var(--card);color:var(--ink);font:inherit;box-shadow:var(--sh);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.cal button.has{background:var(--soft);font-weight:700}.cal button.today{box-shadow:inset 0 0 0 2px var(--brand)}.cal button.sel{background:var(--brand);color:var(--bi)}
+.cal button small{font-size:10px;font-weight:700}.cal button:disabled{visibility:hidden}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}th{color:var(--mute)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);box-shadow:0 -4px 16px rgba(20,38,46,.08);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;max-width:120px;border:0;background:none;color:var(--mute);font:inherit;font-weight:700;font-size:11px;padding:8px 2px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav button.on{color:var(--brand)}nav .ic{font-size:21px;line-height:1;filter:grayscale(1);opacity:.6}nav button.on .ic{filter:none;opacity:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-weight:700;z-index:5;max-width:90%}
+.back{border:0;background:none;color:var(--brand);font:inherit;font-weight:700;padding:8px 0;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script type="module">
+import {initializeApp,getApps} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,persistentMultipleTabManager,collection,doc,getDoc,setDoc,updateDoc,onSnapshot,query,where,writeBatch} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyBNIR2oFEJrcvqcGCBibX6vWCKqIrjMxX0",authDomain:"collection-app-f5e97.firebaseapp.com",projectId:"collection-app-f5e97",storageBucket:"collection-app-f5e97.firebasestorage.app",messagingSenderId:"820066396874",appId:"1:820066396874:web:c09be2d040eaaa4455a233"};
+const app=initializeApp(cfg),auth=getAuth(app);
+const db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})});
+
+const $=id=>document.getElementById(id);
+const inr=n=>'\u20b9'+Math.round(n).toLocaleString('en-IN');
+const iso=d=>{const m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(x<10?'0':'')+x};
+const TODAY=iso(new Date());
+const addDays=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((new Date(a+'T12:00:00')-new Date(b+'T12:00:00'))/864e5);
+const MODES=['Cash','UPI','Bank'];
+const IC={dash:'\ud83d\udcc5',cust:'\ud83d\udc65',loans:'\ud83d\udcd2',add:'\u2795',reports:'\ud83d\udcca',team:'\ud83e\uddd1\u200d\ud83d\udcbc'};
+let ME=null,ERR='',READY=false,dirty=false,U=[];
+let D={users:[],customers:[],loans:[],payments:[]};
+let UI={tab:'dash',month:TODAY.slice(0,7),sel:TODAY,cust:null,filter:'All',pick:'',mode:'Cash',toast:''};
+
+const own=()=>ME&&ME.role==='owner';
+const cust=id=>D.customers.find(c=>c.id===id)||{name:'?',phone:''};
+const nm=id=>(D.users.find(u=>u.id===id)||{}).name||(ME&&id===ME.uid?ME.name:'Staff');
+const lp=l=>D.payments.filter(p=>p.lid===l.id);
+const paid=l=>lp(l).reduce((s,p)=>s+p.amount,0);
+const due=l=>addDays(l.disbursal,100);
+const status=l=>l.amount-paid(l)<=0?'Closed':TODAY>due(l)?'Overdue':'Active';
+const lastPay=l=>lp(l).reduce((m,p)=>p.date>m?p.date:m,l.disbursal);
+const openLoan=cid=>D.loans.find(l=>l.cid===cid&&status(l)!=='Closed');
+const emps=()=>D.users.filter(u=>u.role==='employee');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sum=a=>a.reduce((s,p)=>s+p.amount,0);
+
+function flash(m){UI.toast=m;render();setTimeout(()=>{UI.toast='';render()},2600)}
+function R(){const a=document.activeElement;if(a&&(a.tagName==='INPUT'||a.tagName==='SELECT')&&$('app').contains(a)){dirty=true;return}render()}
+$('app').addEventListener('focusout',()=>{if(dirty){dirty=false;setTimeout(render,400)}});
+window.addEventListener('online',render);window.addEventListener('offline',render);
+
+/* ---------- auth + data ---------- */
+onAuthStateChanged(auth,async u=>{
+  U.forEach(f=>f());U=[];ME=null;D={users:[],customers:[],loans:[],payments:[]};
+  if(u){
+    try{
+      let s=await getDoc(doc(db,'users',u.uid));
+      if(!s.exists()){
+        const b=writeBatch(db);
+        b.set(doc(db,'users',u.uid),{name:'Owner',phone:(u.email||'').split('@')[0],role:'owner',active:true});
+        b.set(doc(db,'meta','setup'),{owner:u.uid});
+        await b.commit();s=await getDoc(doc(db,'users',u.uid));
+      }
+      const d=s.data();
+      if(d.active===false){ERR='This account is disabled. Ask the owner.';await signOut(auth)}
+      else{ME={uid:u.uid,...d};if(ME.role!=='owner'&&['reports','team'].includes(UI.tab))UI.tab='dash';sub()}
+    }catch(e){ERR='Your account is not set up yet. Ask the owner.';await signOut(auth)}
+  }
+  READY=true;render();
+});
+function sub(){
+  const o=own(),w=(n,f)=>o?collection(db,n):query(collection(db,n),where(f,'==',ME.uid));
+  const L=(n,f)=>U.push(onSnapshot(w(n,f==='lemp'?'lemp':'emp'),{includeMetadataChanges:true},s=>{D[n]=s.docs.map(d=>({id:d.id,...d.data(),_p:d.metadata.hasPendingWrites}));R()},e=>console.error(e)));
+  L('customers','emp');L('loans','emp');L('payments','lemp');
+  if(o)U.push(onSnapshot(collection(db,'users'),s=>{D.users=s.docs.map(d=>({id:d.id,...d.data()}));R()}));
+}
+
+/* ---------- actions ---------- */
+const H=window.H={
+  async login(){const p=$('ph').value.trim(),n=$('pin').value.trim();ERR='';
+    try{await signInWithEmailAndPassword(auth,p+'@collections.app',n)}catch(e){ERR='Phone number or PIN is wrong.';render()}},
+  out(){signOut(auth)},
+  tab(t){UI.tab=t;UI.cust=null;render()},
+  set(k,v){UI[k]=v;render()},
+  c(id){UI.cust=id;render()},
+  month(n){const p=UI.month.split('-'),d=new Date(+p[0],+p[1]-1+n,1);UI.month=iso(d).slice(0,7);render()},
+  amt(n){$('amt').value=n},
+  pay(){
+    const l=D.loans.find(x=>x.id===UI.pick),a=parseFloat($('amt').value);
+    if(!l)return flash('Select a customer first');
+    if(!(a>0))return flash('Enter an amount above 0');
+    const bal=l.amount-paid(l);
+    if(a>bal)return flash('Amount is more than the balance ('+inr(bal)+')');
+    const n=new Date(),t=('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2);
+    const r=doc(collection(db,'payments'));
+    setDoc(r,{lid:l.id,cid:l.cid,lemp:l.emp,emp:ME.uid,date:TODAY,time:t,amount:a,mode:UI.mode,ts:Date.now()}).catch(()=>flash('Could not save this payment'));
+    UI.pick='';flash(a>=bal?'Saved. Loan closed':(navigator.onLine?'Payment saved':'Saved offline. Will sync later'));
+  },
+  newLoan(){
+    const sel=$('nlc').value,name=$('nln').value.trim(),ph=$('nlp').value.trim(),a=parseFloat($('nla').value),g=parseFloat($('nlg').value),dt=$('nld').value||TODAY;
+    let emp=$('nle').value;
+    if(sel){if(openLoan(sel))return flash('This customer already has an open loan');emp=cust(sel).emp}
+    else if(!name)return flash('Enter the customer name');
+    if(!(a>0)||!(g>0))return flash('Enter loan amount and amount in hand');
+    if(g>a)return flash('Amount in hand cannot be more than the loan amount');
+    const b=writeBatch(db);let cid=sel;
+    if(!cid){cid=doc(collection(db,'customers')).id;b.set(doc(db,'customers',cid),{name,phone:ph,emp})}
+    b.set(doc(collection(db,'loans')),{cid,emp,disbursal:dt,amount:a,given:g,created:Date.now()});
+    b.commit().catch(()=>flash('Could not save the loan'));
+    UI.cust=null;flash('Loan saved. Due date: '+addDays(dt,100));
+  },
+  async addEmp(){
+    const n=$('en').value.trim(),p=$('ep').value.trim(),pin=$('epin').value.trim();
+    if(!n)return flash('Enter the employee name');
+    if(!/^\d{10}$/.test(p))return flash('Phone number must be 10 digits');
+    if(!/^\d{6}$/.test(pin))return flash('PIN must be 6 digits');
+    try{
+      const s=getApps().find(a=>a.name==='sec')||initializeApp(cfg,'sec'),a2=getAuth(s);
+      const c=await createUserWithEmailAndPassword(a2,p+'@collections.app',pin);
+      await setDoc(doc(db,'users',c.user.uid),{name:n,phone:p,role:'employee',active:true});
+      await signOut(a2);flash(n+' added. Share the phone number and PIN with them');
+    }catch(e){flash(e.code==='auth/email-already-in-use'?'This phone number is already used':'Could not add. Check your internet')}
+  },
+  toggle(id,on){updateDoc(doc(db,'users',id),{active:!on}).catch(()=>flash('Could not update'))},
+  async assign(cid,eid){
+    const b=writeBatch(db);b.update(doc(db,'customers',cid),{emp:eid});
+    D.loans.filter(l=>l.cid===cid).forEach(l=>b.update(doc(db,'loans',l.id),{emp:eid}));
+    D.payments.filter(p=>p.cid===cid).forEach(p=>b.update(doc(db,'payments',p.id),{lemp:eid}));
+    try{await b.commit();flash('Customer reassigned')}catch(e){flash('Could not reassign')}
+  },
+  csv(){
+    const rows=[['Date','Time','Customer','Amount','Mode','Collected by']].concat(D.payments.slice().sort((a,b)=>a.date<b.date?-1:1).map(p=>[p.date,p.time,cust(p.cid).name,p.amount,p.mode,nm(p.emp)]));
+    const t=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download='payments-'+TODAY+'.csv';a.click();
+  }
+};
+
+/* ---------- views ---------- */
+function loginView(){return `<header><h1>Vetri Murugan Finance</h1></header><div class="card"><h2 style="margin-top:0">Log in</h2>${ERR?`<div class="bar" role="alert">${esc(ERR)}</div>`:''}<label for="ph" style="margin-top:0">Phone number</label><input id="ph" type="tel" inputmode="numeric" autocomplete="username"><label for="pin">PIN (6 digits)</label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" onkeydown="if(event.key==='Enter')H.login()"><button class="btn" onclick="H.login()">Log in</button></div>`}
+
+function head(){
+  const pc=D.payments.filter(p=>p._p).length;
+  return `<header><div><h1>Vetri Murugan Finance</h1><div class="mute">${esc(ME.name)} \u00b7 ${own()?'Owner':'Employee'}</div></div><button class="btn sm" onclick="H.out()">Log out</button></header>`
+   +(!navigator.onLine?`<div class="bar">You are offline. Payments are saved on this phone and sync later.</div>`:'')
+   +(pc?`<div class="bar">${pc} payment${pc>1?'s':''} pending sync</div>`:'');
+}
+
+function dash(){
+  const od=D.loans.filter(l=>status(l)==='Overdue'),soon=D.loans.filter(l=>{const d=diff(due(l),TODAY);return status(l)==='Active'&&d>=0&&d<=7});
+  const tp=D.payments.filter(p=>p.date===TODAY);
+  const [y,m]=UI.month.split('-').map(Number),first=new Date(y,m-1,1).getDay(),dim=new Date(y,m,0).getDate();
+  const by={};D.payments.forEach(p=>(by[p.date]=by[p.date]||[]).push(p));
+  let cells=['S','M','T','W','T','F','S'].map(d=>`<div class="h">${d}</div>`).join('')+'<button disabled></button>'.repeat(first);
+  for(let d=1;d<=dim;d++){const ds=UI.month+'-'+(d<10?'0':'')+d,e=by[ds];
+    cells+=`<button class="${e?'has ':''}${ds===TODAY?'today ':''}${ds===UI.sel?'sel':''}" onclick="H.set('sel','${ds}')">${d}${e?`<small>${e.length}</small>`:''}</button>`}
+  const day=(by[UI.sel]||[]).slice().sort((a,b)=>a.time<b.time?-1:1);
+  const list=day.map(p=>`<div class="card row"><div><b>${esc(cust(p.cid).name)}</b><div class="mute">${p.time} \u00b7 ${p.mode} \u00b7 ${esc(nm(p.emp))}${p._p?' <span class="pill sync">Pending sync</span>':''}</div></div><b>${inr(p.amount)}</b></div>`).join('');
+  const mn=new Date(y,m-1,1).toLocaleString('en-IN',{month:'long',year:'numeric'});
+  return `<div class="hero"><span>Collected today</span><b>${inr(sum(tp))}</b><span>${tp.length} ${tp.length===1?'entry':'entries'}</span></div>
+  <div class="stats"><div class="stat red"><b>${od.length}</b><span class="mute">Overdue loans</span></div><div class="stat"><b>${soon.length}</b><span class="mute">Due in 7 days</span></div></div>
+  <h2 class="row"><button class="back" onclick="H.month(-1)">\u2039 Prev</button><span>${mn}</span><button class="back" onclick="H.month(1)">Next \u203a</button></h2>
+  <div class="cal">${cells}</div>
+  <h2>${new Date(UI.sel+'T12:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}: ${day.length} ${day.length===1?'entry':'entries'}, ${inr(sum(day))}</h2>
+  ${list||'<div class="card mute">No collections on this date.</div>'}`;
+}
+
+function newLoanView(){
+  const eo=[{id:ME.uid,name:'Me (Owner)'}].concat(emps().filter(u=>u.active!==false)).map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join('');
+  const co=D.customers.filter(c=>!openLoan(c.id)).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  return `<button class="back" onclick="H.c(null)">\u2039 Back</button><h2 style="margin-top:0">New customer / loan</h2>
+  <label for="nlc" style="margin-top:0">Existing customer (for a repeat loan)</label><select id="nlc"><option value="">New customer</option>${co}</select>
+  <label for="nln">Name (new customer)</label><input id="nln"><label for="nlp">Phone (new customer)</label><input id="nlp" type="tel" inputmode="numeric">
+  <label for="nle">Collector (new customer)</label><select id="nle">${eo}</select>
+  <label for="nla">Loan amount to repay (\u20b9)</label><input id="nla" type="number" inputmode="numeric">
+  <label for="nlg">Amount given in hand (\u20b9)</label><input id="nlg" type="number" inputmode="numeric">
+  <label for="nld">Disbursal date</label><input id="nld" type="date" value="${TODAY}">
+  <div class="mute" style="margin-top:10px">Due date is set automatically: disbursal date + 100 days.</div>
+  <button class="btn" onclick="H.newLoan()">Save loan</button>`;
+}
+
+function custTab(){
+  if(UI.cust==='new'&&own())return newLoanView();
+  if(UI.cust){
+    const c=D.customers.find(x=>x.id===UI.cust);if(!c){UI.cust=null;return custTab()}
+    const l=openLoan(c.id);
+    let o=`<button class="back" onclick="H.c(null)">\u2039 All customers</button><h2 style="margin-top:0">${esc(c.name)}</h2><div class="mute">${esc(c.phone)} \u00b7 Collector: ${esc(nm(c.emp))}</div>`;
+    if(!l)return o+'<div class="card mute">No active loan. See the Loans tab for history.</div>';
+    const pd=paid(l),dl=diff(due(l),TODAY);
+    o+=`<div class="card"><div class="row"><b>Current loan</b><span class="pill ${status(l)}">${status(l)}</span></div><div class="stats" style="margin-top:10px"><div><span class="mute">Loan amount</span><br><b>${inr(l.amount)}</b></div><div><span class="mute">Given in hand</span><br><b>${inr(l.given)}</b></div><div><span class="mute">Repaid</span><br><b>${inr(pd)}</b></div><div><span class="mute">Balance</span><br><b>${inr(l.amount-pd)}</b></div></div><div class="prog"><i style="width:${Math.min(100,pd/l.amount*100)}%"></i></div><div class="mute" style="margin-top:8px">Disbursed ${l.disbursal} \u00b7 Due ${due(l)} (${dl>=0?dl+' days left':-dl+' days overdue'})</div></div>`;
+    const rows=lp(l).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:(a.time<b.time?1:-1)).map(p=>`<tr><td>${p.date}</td><td>${p.time}</td><td>${p.mode}</td><td>${esc(nm(p.emp))}</td><td><b>${inr(p.amount)}</b>${p._p?' <span class="pill sync">Pending</span>':''}</td></tr>`).join('');
+    return o+`<h2>Payment history</h2><div class="card tbl"><table><tr><th>Date</th><th>Time</th><th>Mode</th><th>By</th><th>Amount</th></tr>${rows}</table></div>`;
+  }
+  const items=D.customers.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>{
+    const l=openLoan(c.id);
+    if(!l)return `<div class="card row" style="cursor:pointer" onclick="H.c('${c.id}')"><b>${esc(c.name)}</b><span class="pill Closed">No active loan</span></div>`;
+    const st=status(l),pd=paid(l),idle=diff(TODAY,lastPay(l));
+    return `<div class="card" style="cursor:pointer" onclick="H.c('${c.id}')"><div class="row"><b>${esc(c.name)}</b><span class="pill ${st}">${st}</span></div><div class="row mute"><span>Balance ${inr(l.amount-pd)} of ${inr(l.amount)}</span><span>${idle>=7?'No payment in '+idle+' days':'Last paid '+lastPay(l)}</span></div><div class="prog"><i style="width:${Math.min(100,pd/l.amount*100)}%;${st==='Overdue'?'background:var(--red)':''}"></i></div></div>`}).join('');
+  return `<div class="row"><h2 style="margin:0">Customers</h2>${own()?`<button class="btn sm" onclick="H.c('new')">+ New</button>`:''}</div>${items||'<div class="card mute">No customers yet.'+(own()?' Tap + New to add the first one.':'')+'</div>'}`;
+}
+
+function loansTab(){
+  const f=UI.filter,opts=['All','Active','Overdue','Closed'].map(s=>`<option${s===f?' selected':''}>${s}</option>`).join('');
+  const rows=D.loans.filter(l=>f==='All'||status(l)===f).sort((a,b)=>a.disbursal<b.disbursal?1:-1).map(l=>{
+    const st=status(l);let note='';
+    if(st==='Closed'){const cd=lastPay(l);note=diff(cd,l.disbursal)+' days, '+(cd<=due(l)?'on time':'late')}
+    return `<tr><td>${esc(cust(l.cid).name)}</td><td>${l.disbursal}</td><td>${inr(l.amount)}</td><td>${inr(l.given)}</td><td>${inr(l.amount-l.given)}</td><td>${inr(paid(l))}</td><td><span class="pill ${st}">${st}</span></td><td>${note}</td></tr>`}).join('');
+  return `<h2 style="margin-top:0">Loan history</h2><label for="f" style="margin-top:0">Status</label><select id="f" onchange="H.set('filter',this.value)">${opts}</select><div class="card tbl" style="margin-top:10px"><table><tr><th>Customer</th><th>Disbursed</th><th>Loan</th><th>In hand</th><th>Interest</th><th>Repaid</th><th>Status</th><th>Closed</th></tr>${rows}</table></div>`;
+}
+
+function addTab(){
+  const open=D.loans.filter(l=>status(l)!=='Closed').sort((a,b)=>cust(a.cid).name<cust(b.cid).name?-1:1);
+  const opts='<option value="">Select customer</option>'+open.map(l=>`<option value="${l.id}"${UI.pick===l.id?' selected':''}>${esc(cust(l.cid).name)}</option>`).join('');
+  const l=open.find(x=>x.id===UI.pick);
+  return `<h2 style="margin-top:0">Add payment</h2><label for="cs" style="margin-top:0">Customer</label><select id="cs" onchange="H.set('pick',this.value)">${opts}</select>
+  ${l?`<div class="bar" style="border-color:var(--line)"><div class="row"><span>Balance</span><b>${inr(l.amount-paid(l))}</b></div></div>`:''}
+  <label for="amt">Amount collected (\u20b9)</label><input id="amt" class="big" type="number" inputmode="numeric" min="1" placeholder="0">
+  <div class="chips">${[100,200,300,500,1000].map(n=>`<button onclick="H.amt(${n})">${n}</button>`).join('')}</div>
+  <label>Mode of payment</label><div class="modes">${MODES.map(m=>`<button class="${UI.mode===m?'on':''}" onclick="H.set('mode','${m}')">${m}</button>`).join('')}</div>
+  <div class="mute" style="margin-top:12px">Saved with today's date, the current time and your ID.${navigator.onLine?'':' You are offline, so it will sync later.'}</div>
+  <button class="btn" onclick="H.pay()">Save payment</button>`;
+}
+
+function reports(){
+  const ls=D.loans,lent=ls.reduce((s,l)=>s+l.given,0),tc=ls.reduce((s,l)=>s+l.amount,0);
+  const pend=ls.filter(l=>status(l)!=='Closed').reduce((s,l)=>s+l.amount-paid(l),0);
+  const ids=[ME.uid].concat(emps().map(u=>u.id));
+  const er=ids.map(id=>{const a=D.payments.filter(p=>p.emp===id),t=a.filter(p=>p.date===TODAY);return `<tr><td>${esc(nm(id))}</td><td>${t.length}</td><td>${inr(sum(t))}</td><td>${inr(sum(a))}</td></tr>`}).join('');
+  const mr=MODES.map(m=>`<tr><td>${m}</td><td>${inr(sum(D.payments.filter(p=>p.mode===m)))}</td></tr>`).join('');
+  const or=ls.filter(l=>status(l)==='Overdue').map(l=>`<tr><td>${esc(cust(l.cid).name)}</td><td>${inr(l.amount-paid(l))}</td><td>${diff(TODAY,due(l))} days</td></tr>`).join('');
+  return `<h2 style="margin-top:0">Reports</h2><div class="stats"><div class="stat"><b>${inr(lent)}</b><span class="mute">Cash lent out</span></div><div class="stat"><b>${inr(tc)}</b><span class="mute">Total to collect</span></div><div class="stat"><b>${inr(tc-lent)}</b><span class="mute">Interest earned</span></div><div class="stat"><b>${inr(sum(D.payments))}</b><span class="mute">Collected so far</span></div><div class="stat red"><b>${inr(pend)}</b><span class="mute">Pending on open loans</span></div></div>
+  <h2>By collector</h2><div class="card tbl"><table><tr><th>Name</th><th>Today</th><th>Today \u20b9</th><th>All time</th></tr>${er}</table></div>
+  <h2>By mode</h2><div class="card tbl"><table><tr><th>Mode</th><th>Collected</th></tr>${mr}</table></div>
+  <h2>Overdue</h2><div class="card tbl"><table><tr><th>Customer</th><th>Balance</th><th>Overdue by</th></tr>${or||'<tr><td colspan="3" class="mute">None</td></tr>'}</table></div>
+  <button class="btn alt" onclick="H.csv()">Download all payments (CSV)</button>`;
+}
+
+function team(){
+  const E=emps(),list=E.map(u=>{const off=u.active===false,n=D.customers.filter(c=>c.emp===u.id).length;
+    return `<div class="card"><div class="row"><b>${esc(u.name)}</b><span class="pill ${off?'Closed':'Active'}">${off?'Disabled':'Active'}</span></div><div class="mute">${esc(u.phone)} \u00b7 ${n} customers</div><div style="margin-top:8px"><button class="btn sm" onclick="H.toggle('${u.id}',${!off})">${off?'Enable':'Disable'}</button></div></div>`}).join('');
+  const opt=sel=>[{id:ME.uid,name:'Me (Owner)'}].concat(E.filter(u=>u.active!==false||u.id===sel)).map(u=>`<option value="${u.id}"${u.id===sel?' selected':''}>${esc(u.name)}</option>`).join('');
+  const asg=D.customers.map(c=>`<div class="row" style="margin:8px 0"><span>${esc(c.name)}</span><select style="width:auto;height:44px" aria-label="Collector for ${esc(c.name)}" onchange="H.assign('${c.id}',this.value)">${opt(c.emp)}</select></div>`).join('');
+  return `<h2 style="margin-top:0">Team</h2>${list||'<div class="card mute">No employees yet.</div>'}
+  <h2>Add employee</h2><div class="card"><label for="en" style="margin-top:0">Name</label><input id="en"><label for="ep">Phone number (10 digits)</label><input id="ep" type="tel" inputmode="numeric"><label for="epin">PIN (6 digits)</label><input id="epin" inputmode="numeric" maxlength="6"><button class="btn" onclick="H.addEmp()">Add employee</button></div>
+  <h2>Customer assignment</h2><div class="card">${asg||'<span class="mute">No customers yet.</span>'}</div>`;
+}
+
+function render(){
+  const A=$('app');
+  if(!READY){A.innerHTML='<div class="card mute" style="margin-top:40px">Loading\u2026</div>';return}
+  if(!ME){A.innerHTML=loginView();return}
+  let tabs=[['dash','Dashboard'],['cust','Customers'],['loans','Loans'],['add','Add'],['reports','Reports'],['team','Team']];
+  if(!own())tabs=tabs.filter(t=>t[0]!=='reports'&&t[0]!=='team');
+  const body={dash,cust:custTab,loans:loansTab,add:addTab,reports,team}[UI.tab]();
+  A.innerHTML=head()+body+'<nav>'+tabs.map(t=>`<button class="${UI.tab===t[0]?'on':''}" onclick="H.tab('${t[0]}')"><span class="ic">${IC[t[0]]}</span>${t[1]}</button>`).join('')+'</nav>'+(UI.toast?`<div class="toast" role="status">${esc(UI.toast)}</div>`:'');
+}
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
